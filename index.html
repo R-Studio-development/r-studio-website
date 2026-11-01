@@ -15,7 +15,6 @@
     <nav class="navbar">
         <div class="container">
             <a href="index.html" class="logo">
-                <!-- لوگوی خود را در این مسیر قرار دهید -->
                 <img src="assets/img/logo-gold.png" alt="R Studio">
             </a>
             <ul class="nav-links">
@@ -29,7 +28,7 @@
         </div>
     </nav>
 
-       <!-- Hero -->
+    <!-- Hero -->
     <section class="hero">
         <div class="hero-fullwidth">
             <!-- متن‌ها سمت راست -->
@@ -42,14 +41,11 @@
                 <a href="contact.html" class="btn">شروع پروژه</a>
             </div>
             
-            <!-- ویدیو سمت چپ -->
+            <!-- انیمیشن سمت چپ -->
             <div class="hero-video">
-                <video autoplay loop muted playsinline>
-                    <source src="assets/img/hero-video.webm" type="video/webm">
-                    مرورگر شما از ویدیو پشتیبانی نمی‌کند.
-                </video>
+                <div id="lottie-hero" style="width: 100%; max-width: 600px;"></div>
             </div>
-        </div>
+        </div> <!-- این تگ div بسته شده بود -->
     </section>
 
     <!-- Services Summary -->
@@ -85,7 +81,6 @@
             <div class="portfolio-grid">
                 <!-- Project 1 -->
                 <div class="portfolio-item">
-                    <!-- تصویر شاخص را در مسیر زیر قرار دهید -->
                     <img src="assets/img/rhome-thumb.jpg" alt="خانه آر" class="portfolio-img">
                     <div class="portfolio-info">
                         <h3>خانه آر (Rhome)</h3>
@@ -132,6 +127,22 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
+    <!-- Lottie Library & Init -->
     <script src="assets/js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const lottieContainer = document.getElementById('lottie-hero');
+            if (lottieContainer) {
+                lottie.loadAnimation({
+                    container: lottieContainer,
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: true,
+                    path: 'assets/img/Simple-coding.json' // اگر اسم فایل با s کوچک است، اینجا را تغییر دهید
+                });
+            }
+        });
+    </script>
 </body>
 </html>
