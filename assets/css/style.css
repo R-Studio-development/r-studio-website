@@ -111,18 +111,9 @@ section { padding: 100px 0; }
 /* استایل ویدیو */
 .hero-video {
     display: flex;
-    justify-content: flex-start; /* ویدیو رو می‌چسبونه به سمت چپ */
+    justify-content: flex-start; /* انیمیشن رو می‌چسبونه به سمت چپ */
     align-items: center;
     width: 100%;
-}
-
-.hero-video video {
-    width: 100%;
-    height: auto;
-    max-height: 85vh; /* جلوگیری از بیرون زدن از صفحه */
-    object-fit: cover;
-    /* گوشه‌ها رو فقط سمت راست گرد می‌کنیم تا سمت چپ کاملا به لبه بچسبه */
-    border-radius: 0 30px 30px 0; 
 }
 
 /* ===== CARDS & GRIDS ===== */
