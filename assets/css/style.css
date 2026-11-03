@@ -178,6 +178,64 @@ footer .footer-logo { height: 40px; margin-bottom: 20px; }
 }
 .whatsapp-float:hover { transform: scale(1.1); color: white; }
 
+/* ===== TESTIMONIALS ===== */
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.testimonial-card {
+    background: var(--bg-lighter);
+    padding: 40px 30px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+.quote-icon {
+    font-size: 2.5rem;
+    color: var(--gold);
+    opacity: 0.2;
+    position: absolute;
+    top: 25px;
+    left: 25px; /* چون سایت RTL است، آیکون سمت چپ قرار می‌گیرد */
+}
+
+.testimonial-text {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.9;
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 1;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
+
+.author-info h4 {
+    color: var(--text-main);
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.author-info span {
+    color: var(--gold);
+    font-size: 0.85rem;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 992px) {
     .hero-fullwidth {
