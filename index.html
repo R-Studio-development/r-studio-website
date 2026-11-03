@@ -114,45 +114,17 @@
         </div>
     </section>
 
-        <!-- Testimonials -->
+           <!-- Testimonials -->
     <section id="testimonials">
         <div class="container">
             <h2 class="section-title">نظر <span>مشتریان</span></h2>
             <p class="section-subtitle">اعتماد شما، بزرگترین سرمایه ماست</p>
-            <div class="testimonials-grid">
-                <!-- نظر 1 -->
-                <div class="testimonial-card">
-                    <i class="fas fa-quote-right quote-icon"></i>
-                    <p class="testimonial-text">آرمین سایت رو دقیقاً همون‌طور که می‌خواستیم تحویل داد. سرعت سایت عالیه و بعد از راه‌اندازی، فروش‌مون به طرز محسوسی افزایش پیدا کرد.</p>
-                    <div class="testimonial-author">
-                        <div class="author-info">
-                            <h4>مدیریت خانه آر</h4>
-                            <span>فروشگاه دکوراتیو Rhome</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- نظر 2 -->
-                <div class="testimonial-card">
-                    <i class="fas fa-quote-right quote-icon"></i>
-                    <p class="testimonial-text">طراحی چندزبانه و لوکس سایت جاوید واچز فراتر از انتظار ما بود. دقت در جزئیات و پشتیبانی عالی، کار با آرمین رو به یک تجربه لذت‌بخش تبدیل کرد.</p>
-                    <div class="testimonial-author">
-                        <div class="author-info">
-                            <h4>تیم جاوید واچز</h4>
-                            <span>برند ساعت Javid Watches</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- نظر 3 (اختیاری - اگر مشتری دیگه‌ای داری) -->
-                <div class="testimonial-card">
-                    <i class="fas fa-quote-right quote-icon"></i>
-                    <p class="testimonial-text">همکاری با R Studio یک تجربه حرفه‌ای بود. از مشاوره اولیه تا تحویل نهایی، همه‌چیز شفاف و منظم پیش رفت.</p>
-                    <div class="testimonial-author">
-                        <div class="author-info">
-                            <h4>مرکز درمانی هیراد</h4>
-                            <span>پروژه در دست اقدام</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="testimonials-grid" id="testimonials-container">
+                <!-- نظرات به صورت خودکار با جاوااسکریپت اینجا قرار می‌گیرند -->
+                <p style="text-align: center; color: var(--text-muted); width: 100%;">در حال بارگذاری نظرات...</p>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="review.html" class="btn btn-outline">ثبت نظر جدید</a>
             </div>
         </div>
     </section>
@@ -184,6 +156,43 @@
                     autoplay: true,
                     path: 'assets/img/Simple-coding.json' // اگر اسم فایل با s کوچک است، اینجا را تغییر دهید
                 });
+            }
+        });
+    </script>
+        <!-- Load Testimonials -->
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const container = document.getElementById('testimonials-container');
+            if (!container) return;
+
+            try {
+                const response = await fetch('/api/list');
+                const data = await response.json();
+
+                if (data.reviews && data.reviews.length > 0) {
+                    container.innerHTML = ''; // پاک کردن پیام "در حال بارگذاری"
+                    data.reviews.forEach(review => {
+                        const card = document.createElement('div');
+                        card.className = 'testimonial-card';
+                        
+                        card.innerHTML = `
+                            <i class="fas fa-quote-right quote-icon"></i>
+                            <p class="testimonial-text">${review.review}</p>
+                            <div class="testimonial-author">
+                                <div class="author-info">
+                                    <h4>${review.name}</h4>
+                                    <span>مشتری R Studio</span>
+                                </div>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                } else {
+                    container.innerHTML = '<p style="text-align: center; color: var(--text-muted); width: 100%;">هنوز نظری ثبت نشده است. اولین نفر باشید!</p>';
+                }
+            } catch (error) {
+                console.error("Error loading reviews:", error);
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); width: 100%;">خطا در بارگذاری نظرات.</p>';
             }
         });
     </script>
