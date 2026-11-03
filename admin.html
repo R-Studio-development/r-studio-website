@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مدیریت نظرات | R Studio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .admin-container { max-width: 900px; margin: 120px auto 60px; padding: 0 20px; }
+        .login-box { background: var(--bg-lighter); padding: 40px; border-radius: 20px; border: 1px solid var(--border-color); max-width: 400px; margin: 0 auto; text-align: center; }
+        .login-box input { width: 100%; padding: 15px; margin-bottom: 20px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-main); font-family: inherit; }
+        .login-box input:focus { outline: none; border-color: var(--gold); }
+        .reviews-table { width: 100%; background: var(--bg-lighter); border-radius: 20px; border: 1px solid var(--border-color); overflow: hidden; margin-top: 30px; }
+        .reviews-table th, .reviews-table td { padding: 15px; text-align: right; border-bottom: 1px solid var(--border-color); }
+        .reviews-table th { background: var(--bg-color); color: var(--gold); font-weight: 600; }
+        .reviews-table tr:last-child td { border-bottom: none; }
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; }
+        .status-approved { background: rgba(40, 167, 69, 0.2); color: #28a745; }
+        .status-pending { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
+        .action-btn { padding: 6px 14px; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 0.85rem; margin: 0 3px; transition: 0.3s; }
+        .btn-approve { background: #28a745; color: white; }
+        .btn-approve:hover { background: #218838; }
+        .btn-delete { background: #dc3545; color: white; }
+        .btn-delete:hover { background: #c82333; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- فرم ورود -->
+        <div id="loginSection" class="login-box">
+            <h2 style="margin-bottom: 20px;">ورود به <span style="color: var(--gold);">پنل مدیریت</span></h2>
+            <input type="password" id="adminPassword" placeholder="رمز عبور را وارد کنید">
+            <button class="btn" style="width: 100%;" onclick="login()">ورود</button>
+            <p id="loginError" style="color: #dc3545; margin-top: 15px; display: none;">رمز عبور اشتباه است!</p>
+        </div>
+
+        <!-- بخش مدیریت -->
+        <div id="adminSection" class="hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>مدیریت <span style="color: var(--gold);">نظرات</span></h2>
+                <button class="btn btn-outline" onclick="logout()">خروج</button>
+            </div>
+            <div id="reviewsContainer">
+                <p style="text-align: center; color: var(--text-muted);">در حال بارگذاری...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let adminPassword = '';
+
+        function login() {
+            const pass = document.getElementById('adminPassword').value;
+            if (!pass) return;
+
+            adminPassword = pass;
+            // تست رمز با یک درخواست به سرور
+            fetch('/api/admin-list', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: pass })
+            })
+            .then(res => {
+                if (res.ok) {
+                    document.getElementById('loginSection').classList.add('hidden');
+                    document.getElementById('adminSection').classList.remove('hidden');
+                    loadReviews();
+                } else {
+                    document.getElementById('loginError').style.display = 'block';
+                }
+            })
+            .catch(() => {
+                document.getElementById('loginError').style.display = 'block';
+            });
+        }
+
+        function logout() {
+            adminPassword = '';
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('adminSection').classList.add('hidden');
+        }
+
+        function loadReviews() {
+            fetch('/api/admin-list', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: adminPassword })
+            })
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('reviewsContainer');
+                if (!data.reviews || data.reviews.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">هیچ نظری وجود ندارد.</p>';
+                    return;
+                }
+
+                let html = '<table class="reviews-table"><thead><tr><th>نام</th><th>کسب‌وکار</th><th>نظر</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody>';
+                data.reviews.forEach(r => {
+                    const status = r.approved == 1 
+                        ? '<span class="status-badge status-approved">تأیید شده</span>' 
+                        : '<span class="status-badge status-pending">در انتظار</span>';
+                    
+                    const approveBtn = r.approved == 1 
+                        ? '' 
+                        : `<button class="action-btn btn-approve" onclick="updateReview(${r.id}, 1)">تأیید</button>`;
+                    
+                    html += `<tr>
+                        <td>${r.name}</td>
+                        <td>${r.business || '-'}</td>
+                        <td>${r.review}</td>
+                        <td>${status}</td>
+                        <td>${approveBtn}<button class="action-btn btn-delete" onclick="updateReview(${r.id}, -1)">حذف</button></td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById('reviewsContainer').innerHTML = '<p style="color: #dc3545;">خطا در بارگذاری نظرات.</p>';
+            });
+        }
+
+        function updateReview(id, action) {
+            if (action === -1 && !confirm('آیا از حذف این نظر مطمئن هستید؟')) return;
+            
+            fetch('/api/admin-update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: adminPassword, id: id, action: action })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    loadReviews();
+                } else {
+                    alert('خطا: ' + (data.error || 'نامشخص'));
+                }
+            })
+            .catch(err => alert('خطای شبکه'));
+        }
+    </script>
+</body>
+</html>
