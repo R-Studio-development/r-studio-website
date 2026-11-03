@@ -29,13 +29,12 @@
             <p class="section-subtitle">نظر شما پس از تأیید، در صفحه اصلی نمایش داده می‌شود</p>
             
             <div style="max-width: 600px; margin: 0 auto; background: var(--bg-lighter); padding: 40px; border-radius: 20px; border: 1px solid var(--border-color);">
-                <form id="reviewForm" class="contact-form">
+                                <form id="reviewForm" class="contact-form">
                     <input type="text" name="name" placeholder="نام و نام خانوادگی" required>
-                    <input type="text" name="business" placeholder="نام کسب‌وکار یا وب‌سایت شما">
+                    <input type="text" name="business" placeholder="نام کسب‌وکار یا وب‌سایت (مثلاً: خانه آر)" required>
                     <textarea name="review" placeholder="نظر خود را بنویسید..." required minlength="10"></textarea>
                     
-                    <!-- Turnstile Widget -->
-                    <div class="cf-turnstile" data-sitekey="0x4AAAAAAFxuS8cUpF6x3aBL" data-theme="dark" style="margin-bottom: 20px;"></div>
+                    <div class="cf-turnstile" data-sitekey="YOUR_SITE_KEY" data-theme="dark" data-size="flexible" style="margin-bottom: 20px; display: flex; justify-content: center;"></div>
                     
                     <button type="submit" class="btn" style="width: 100%;">ارسال نظر</button>
                 </form>
