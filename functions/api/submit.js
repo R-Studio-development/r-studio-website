@@ -3,10 +3,9 @@ export async function onRequestPost(context) {
     
     try {
         const data = await request.json();
-        const { name, review, 'cf-turnstile-response': token } = data;
+        const { name, business, review, 'cf-turnstile-response': token } = data;
         
-        // ۱. اعتبارسنجی ورودی
-        if (!name || !review || !token) {
+        if (!name || !business || !review || !token) {
             return new Response(JSON.stringify({ error: 'اطلاعات ناقص است' }), {
                 status: 400,
                 headers: { 'Content-Type': 'application/json' }
@@ -20,7 +19,6 @@ export async function onRequestPost(context) {
             });
         }
         
-        // ۲. تأیید توکن Turnstile
         const verifyResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -39,10 +37,9 @@ export async function onRequestPost(context) {
             });
         }
         
-        // ۳. ذخیره در دیتابیس
         await env.DB.prepare(
-            'INSERT INTO reviews (name, review, approved) VALUES (?, ?, 0)'
-        ).bind(name, review).run();
+            'INSERT INTO reviews (name, business, review, approved) VALUES (?, ?, ?, 0)'
+        ).bind(name, business, review).run();
         
         return new Response(JSON.stringify({ success: true }), {
             status: 200,
