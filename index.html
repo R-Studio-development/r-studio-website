@@ -31,7 +31,6 @@
     <!-- Hero -->
     <section class="hero">
         <div class="hero-fullwidth">
-            <!-- متن‌ها سمت راست -->
             <div class="hero-text">
                 <h1>طراحی وب برای <span class="highlight">فردا</span></h1>
                 <div class="typing-wrapper">
@@ -41,11 +40,10 @@
                 <a href="contact.html" class="btn">شروع پروژه</a>
             </div>
             
-            <!-- انیمیشن سمت چپ -->
             <div class="hero-video">
                 <div id="lottie-hero" style="width: 100%; max-width: 600px;"></div>
             </div>
-        </div> <!-- این تگ div بسته شده بود -->
+        </div>
     </section>
 
     <!-- Services Summary -->
@@ -79,7 +77,6 @@
             <h2 class="section-title">نمونه‌کارهای <span>اخیر</span></h2>
             <p class="section-subtitle">کیفیت، مهم‌تر از تعداد است</p>
             <div class="portfolio-grid">
-                <!-- Project 1 -->
                 <div class="portfolio-item">
                     <img src="assets/img/rhome-thumb.jpg" alt="خانه آر" class="portfolio-img">
                     <div class="portfolio-info">
@@ -93,7 +90,6 @@
                         <a href="https://rhome-store.ir" target="_blank" class="btn btn-outline">مشاهده سایت زنده</a>
                     </div>
                 </div>
-                <!-- Project 2 -->
                 <div class="portfolio-item">
                     <img src="assets/img/javid-thumb.jpg" alt="جاوید واچز" class="portfolio-img">
                     <div class="portfolio-info">
@@ -114,13 +110,12 @@
         </div>
     </section>
 
-           <!-- Testimonials -->
+    <!-- Testimonials -->
     <section id="testimonials">
         <div class="container">
             <h2 class="section-title">نظر <span>مشتریان</span></h2>
             <p class="section-subtitle">اعتماد شما، بزرگترین سرمایه ماست</p>
             <div class="testimonials-grid" id="testimonials-container">
-                <!-- نظرات به صورت خودکار با جاوااسکریپت اینجا قرار می‌گیرند -->
                 <p style="text-align: center; color: var(--text-muted); width: 100%;">در حال بارگذاری نظرات...</p>
             </div>
             <div style="text-align: center; margin-top: 40px;">
@@ -137,12 +132,10 @@
         </div>
     </footer>
 
-    <!-- WhatsApp Float -->
     <a href="https://wa.me/989131373793?text=سلام، برای سفارش طراحی سایت پیام می‌دم" class="whatsapp-float" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- Lottie Library & Init -->
     <script src="assets/js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
     <script>
@@ -154,12 +147,13 @@
                     renderer: 'svg',
                     loop: true,
                     autoplay: true,
-                    path: 'assets/img/Simple-coding.json' // اگر اسم فایل با s کوچک است، اینجا را تغییر دهید
+                    path: 'assets/img/Simple-coding.json'
                 });
             }
         });
     </script>
-        <!-- Load Testimonials -->
+    
+    <!-- Load Testimonials -->
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             const container = document.getElementById('testimonials-container');
@@ -170,18 +164,19 @@
                 const data = await response.json();
 
                 if (data.reviews && data.reviews.length > 0) {
-                    container.innerHTML = ''; // پاک کردن پیام "در حال بارگذاری"
+                    container.innerHTML = '';
                     data.reviews.forEach(review => {
                         const card = document.createElement('div');
                         card.className = 'testimonial-card';
                         
+                        // اینجا از review.business استفاده شده است
                         card.innerHTML = `
                             <i class="fas fa-quote-right quote-icon"></i>
                             <p class="testimonial-text">${review.review}</p>
                             <div class="testimonial-author">
                                 <div class="author-info">
                                     <h4>${review.name}</h4>
-                                    <span>مشتری R Studio</span>
+                                    <span>${review.business}</span>
                                 </div>
                             </div>
                         `;
