@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نمونه‌کارها | R Studio</title>
+    <meta name="description" content="مطالعه موردی پروژه‌های طراحی سایت توسط R Studio. از چالش تا نتیجه.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -25,65 +26,94 @@
 
     <section style="margin-top: 100px;">
         <div class="container">
+            <!-- هدر صفحه -->
             <h2 class="section-title">نمونه‌کارهای <span>من</span></h2>
-            <p class="section-subtitle">پروژه‌هایی که با عشق و دقت ساخته شده‌اند</p>
-            
-            <div class="portfolio-grid">
-                <!-- Project 1 -->
-                <div class="portfolio-item">
+            <p class="section-subtitle">مطالعه‌ای بر پروژه‌های موفق؛ از چالش تا نتیجه</p>
+
+            <!-- پروژه ۱: خانه آر -->
+            <div class="case-study">
+                <div class="case-study-image">
                     <img src="assets/img/rhome-thumb.jpg" alt="خانه آر" class="portfolio-img">
-                    <div class="portfolio-info">
-                        <h3>خانه آر (Rhome)</h3>
-                        <p><strong>چالش:</strong> نیاز به یک فروشگاه سریع و زیبا برای محصولات دکوراتیو با گلدوزی.</p>
-                        <p><strong>راه‌حل:</strong> طراحی رابط کاربری مدرن، پیاده‌سازی با ووکامرس و کدنویسی اختصاصی برای رفع محدودیت‌های قالب‌های آماده. اتصال به درگاه پرداخت و فروشگاه‌های واسط مثل ترب برای افزایش فروش.</p>
-                        <div class="portfolio-tags">
-                            <span class="tag">فروشگاهی</span>
-                            <span class="tag">ووکامرس</span>
-                            <span class="tag">وردپرس</span>
-                        </div>
-                        <a href="https://rhome-store.ir" target="_blank" class="btn btn-outline">مشاهده سایت زنده</a>
-                    </div>
                 </div>
-                <!-- Project 2 -->
-                <div class="portfolio-item">
-                    <img src="assets/img/javid-thumb.jpg" alt="جاوید واچز" class="portfolio-img">
-                    <div class="portfolio-info">
-                        <h3>جاوید واچز (Javid Watches)</h3>
-                        <p><strong>چالش:</strong> ساخت یک وب‌سایت نمایشگاهی لوکس و چندزبانه برای یک برند ساعت.</p>
-                        <p><strong>راه‌حل:</strong> طراحی هویت بصری متناسب با برند ساعت، پیاده‌سازی سیستم چندزبانه و آماده‌سازی زیرساخت برای افزودن قابلیت فروشگاه در آینده.</p>
-                        <div class="portfolio-tags">
-                            <span class="tag">چندزبانه</span>
-                            <span class="tag">برندینگ</span>
-                            <span class="tag">نمایشگاهی</span>
-                        </div>
-                        <a href="https://javidwatches.com" target="_blank" class="btn btn-outline">مشاهده سایت زنده</a>
+                <div class="case-study-content">
+                    <h3>خانه آر (Rhome)</h3>
+                    
+                    <div class="case-section">
+                        <h4><i class="fas fa-exclamation-circle"></i> چالش</h4>
+                        <p>فروشگاه با وجود محصولات باکیفیت، در فضای آنلاین دیده نمی‌شد.</p>
                     </div>
+
+                    <div class="case-section">
+                        <h4><i class="fas fa-lightbulb"></i> راه‌حل</h4>
+                        <p>طراحی و پیاده‌سازی از صفر، ساخت فروشگاه آنلاین کامل، بهینه‌سازی سئو، و اتصال به اسنپ‌پی و ترب.</p>
+                    </div>
+
+                    <div class="case-section">
+                        <h4><i class="fas fa-chart-line"></i> نتیجه</h4>
+                        <p>حضور پررنگ در فروشگاه‌های واسط و افزایش دیده شدن برند.</p>
+                    </div>
+
+                    <div class="case-tags">
+                        <span class="tag">ووکامرس</span>
+                        <span class="tag">وردپرس</span>
+                        <span class="tag">کدنویسی اختصاصی</span>
+                        <span class="tag">سئو</span>
+                    </div>
+
+                    <a href="https://rhome-store.ir" target="_blank" class="btn">مشاهده سایت زنده</a>
+                </div>
+            </div>
+
+            <!-- پروژه ۲: جاوید واچز -->
+            <div class="case-study reverse">
+                <div class="case-study-image">
+                    <img src="assets/img/javid-thumb.jpg" alt="جاوید واچز" class="portfolio-img">
+                </div>
+                <div class="case-study-content">
+                    <h3>جاوید واچز (Javid Watches)</h3>
+                    
+                    <div class="case-section">
+                        <h4><i class="fas fa-exclamation-circle"></i> چالش</h4>
+                        <p>نیاز به یک وب‌سایت لوکس و تعاملی برای معرفی برند ساعت.</p>
+                    </div>
+
+                    <div class="case-section">
+                        <h4><i class="fas fa-lightbulb"></i> راه‌حل</h4>
+                        <p>طراحی از صفر، کاملاً تعاملی برای نگه داشتن مخاطب، نمایش محصولات، امکان تماس با مدیر، چندزبانه و ریسپانسیو.</p>
+                    </div>
+
+                    <div class="case-section">
+                        <h4><i class="fas fa-chart-line"></i> نتیجه</h4>
+                        <p>یک ویترین دیجیتال حرفه‌ای و ماندگار برای برند.</p>
+                    </div>
+
+                    <div class="case-tags">
+                        <span class="tag">وردپرس</span>
+                        <span class="tag">چندزبانه</span>
+                        <span class="tag">ریسپانسیو</span>
+                        <span class="tag">طراحی تعاملی</span>
+                    </div>
+
+                    <a href="https://javidwatches.com" target="_blank" class="btn">مشاهده سایت زنده</a>
                 </div>
             </div>
         </div>
     </section>
 
-        <!-- فوتر حرفه‌ای -->
+    <!-- فوتر -->
     <footer class="site-footer">
         <div class="container">
-            <!-- CTA بزرگ -->
             <div class="footer-cta">
                 <h3>پروژه بعدی شما، دغدغه بعدی من است.</h3>
                 <p>بیایید درباره ایده‌تان صحبت کنیم.</p>
                 <a href="https://wa.me/989131373793?text=سلام، برای شروع پروژه جدید پیام می‌دم" target="_blank" class="btn">شروع پروژه</a>
             </div>
-
             <div class="footer-divider"></div>
-
-            <!-- بخش‌های اصلی -->
             <div class="footer-content">
-                <!-- تماس سریع (سمت راست) -->
                 <div class="footer-contact-minimal">
                     <a href="https://wa.me/989131373793" target="_blank"><i class="fab fa-whatsapp"></i> واتساپ</a>
                     <a href="mailto:rahmani.armin@gmail.com"><i class="fas fa-envelope"></i> ایمیل</a>
                 </div>
-
-                <!-- لینک‌های سریع (وسط) -->
                 <div class="footer-nav">
                     <a href="index.html">خانه</a>
                     <a href="portfolio.html">نمونه‌کارها</a>
@@ -91,15 +121,11 @@
                     <a href="about.html">درباره من</a>
                     <a href="contact.html">تماس</a>
                 </div>
-
-                <!-- لوگو (سمت چپ) -->
                 <div class="footer-brand">
                     <img src="assets/img/logo-gold.png" alt="R Studio" class="footer-logo">
                     <p>طراحی وب برای فردا.</p>
                 </div>
             </div>
-
-            <!-- نوار پایین -->
             <div class="footer-bottom">
                 <p>&copy; ۲۰۲۴ R Studio | طراحی اختصاصی، بدون قالب آماده.</p>
                 <a href="review.html">ثبت نظر</a>
