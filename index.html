@@ -71,38 +71,13 @@
         </div>
     </section>
 
-    <!-- Featured Portfolio -->
+        <!-- Featured Portfolio -->
     <section style="background: var(--bg-lighter);">
         <div class="container">
             <h2 class="section-title">نمونه‌کارهای <span>اخیر</span></h2>
             <p class="section-subtitle">کیفیت، مهم‌تر از تعداد است</p>
-            <div class="portfolio-grid">
-                <div class="portfolio-item">
-                    <img src="assets/img/rhome-thumb.jpg" alt="خانه آر" class="portfolio-img">
-                    <div class="portfolio-info">
-                        <h3>خانه آر (Rhome)</h3>
-                        <p>فروشگاه اینترنتی محصولات دکوراتیو با گلدوزی. طراحی و پیاده‌سازی کامل، اتصال به درگاه پرداخت و فروشگاه‌های واسط مثل ترب.</p>
-                        <div class="portfolio-tags">
-                            <span class="tag">ووکامرس</span>
-                            <span class="tag">وردپرس</span>
-                            <span class="tag">کدنویسی اختصاصی</span>
-                        </div>
-                        <a href="https://rhome-store.ir" target="_blank" class="btn btn-outline">مشاهده سایت زنده</a>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <img src="assets/img/javid-thumb.jpg" alt="جاوید واچز" class="portfolio-img">
-                    <div class="portfolio-info">
-                        <h3>جاوید واچز (Javid Watches)</h3>
-                        <p>وب‌سایت چندزبانه برای یک برند ساعت لوکس. طراحی نمایشگاهی با قابلیت توسعه به فروشگاه اینترنتی.</p>
-                        <div class="portfolio-tags">
-                            <span class="tag">چندزبانه</span>
-                            <span class="tag">طراحی اختصاصی</span>
-                            <span class="tag">برندینگ</span>
-                        </div>
-                        <a href="https://javidwatches.com" target="_blank" class="btn btn-outline">مشاهده سایت زنده</a>
-                    </div>
-                </div>
+            <div class="portfolio-grid" id="homePortfolioContainer">
+                <p style="text-align: center; color: var(--text-muted); width: 100%;">در حال بارگذاری...</p>
             </div>
             <div style="text-align: center; margin-top: 40px;">
                 <a href="portfolio.html" class="btn">مشاهده جزئیات بیشتر</a>
@@ -188,6 +163,45 @@
             } catch (error) {
                 console.error("Error loading reviews:", error);
                 container.innerHTML = '<p style="text-align: center; color: var(--text-muted); width: 100%;">خطا در بارگذاری نظرات.</p>';
+            }
+        });
+    </script>
+        <!-- Load Home Portfolio -->
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const container = document.getElementById('homePortfolioContainer');
+            if (!container) return;
+
+            try {
+                const response = await fetch('/api/portfolio-list');
+                const data = await response.json();
+
+                if (data.portfolio && data.portfolio.length > 0) {
+                    container.innerHTML = '';
+                    // فقط دو پروژه اول را نمایش بده
+                    data.portfolio.slice(0, 2).forEach(project => {
+                        const card = document.createElement('div');
+                        card.className = 'portfolio-item';
+                        
+                        const tags = project.tags ? project.tags.split(',').map(t => `<span class="tag">${t.trim()}</span>`).join('') : '';
+                        
+                        card.innerHTML = `
+                            <img src="${project.image_url}" alt="${project.title}" class="portfolio-img">
+                            <div class="portfolio-info">
+                                <h3>${project.title}</h3>
+                                <p>${project.description}</p>
+                                <div class="portfolio-tags">${tags}</div>
+                                <a href="${project.live_url}" target="_blank" class="btn btn-outline">مشاهده سایت زنده</a>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                } else {
+                    container.innerHTML = '<p style="text-align: center; color: var(--text-muted); width: 100%;">هنوز پروژه‌ای ثبت نشده است.</p>';
+                }
+            } catch (error) {
+                console.error("Error loading portfolio:", error);
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); width: 100%;">خطا در بارگذاری نمونه‌کارها.</p>';
             }
         });
     </script>
