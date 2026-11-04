@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحه پیدا نشد | R Studio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .error-code {
+            font-size: 10rem;
+            font-weight: 800;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        
+        .error-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+        
+        .error-message {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+        }
+        
+        .error-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 6rem;
+            }
+            .error-title {
+                font-size: 1.6rem;
+            }
+            .error-message {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-page">
+        <div class="container">
+            <div class="error-code">404</div>
+            <h1 class="error-title">صفحه‌ای که دنبالش بودید پیدا نشد</h1>
+            <p class="error-message">شاید آدرس را اشتباه وارد کرده‌اید یا این صفحه حذف شده است. نگران نباشید، می‌توانید از اینجا به مسیر اصلی برگردید.</p>
+            <div class="error-actions">
+                <a href="index.html" class="btn">بازگشت به خانه</a>
+                <a href="portfolio.html" class="btn btn-outline">مشاهده نمونه‌کارها</a>
+                <a href="contact.html" class="btn btn-outline">تماس با من</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
