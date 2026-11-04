@@ -42,7 +42,14 @@
                 <h2>مدیریت <span style="color: var(--gold);">نظرات</span></h2>
                 <button class="btn btn-outline" onclick="logout()">خروج</button>
             </div>
+            <div class="admin-tabs" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button class="btn" id="tabReviews" onclick="switchTab('reviews')">نظرات</button>
+                <button class="btn btn-outline" id="tabMessages" onclick="switchTab('messages')">پیام‌های تماس</button>
+            </div>
             <div id="reviewsContainer">
+                <p style="text-align: center; color: var(--text-muted);">در حال بارگذاری...</p>
+            </div>
+            <div id="messagesContainer" class="hidden">
                 <p style="text-align: center; color: var(--text-muted);">در حال بارگذاری...</p>
             </div>
         </div>
@@ -135,6 +142,83 @@
             .then(data => {
                 if (data.success) {
                     loadReviews();
+                } else {
+                    alert('خطا: ' + (data.error || 'نامشخص'));
+                }
+            })
+            .catch(err => alert('خطای شبکه'));
+        }
+
+                function switchTab(tab) {
+            if (tab === 'reviews') {
+                document.getElementById('reviewsContainer').classList.remove('hidden');
+                document.getElementById('messagesContainer').classList.add('hidden');
+                document.getElementById('tabReviews').className = 'btn';
+                document.getElementById('tabMessages').className = 'btn btn-outline';
+                loadReviews();
+            } else {
+                document.getElementById('reviewsContainer').classList.add('hidden');
+                document.getElementById('messagesContainer').classList.remove('hidden');
+                document.getElementById('tabReviews').className = 'btn btn-outline';
+                document.getElementById('tabMessages').className = 'btn';
+                loadMessages();
+            }
+        }
+
+        function loadMessages() {
+            fetch('/api/contact-list', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: adminPassword })
+            })
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('messagesContainer');
+                if (!data.messages || data.messages.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">هیچ پیامی وجود ندارد.</p>';
+                    return;
+                }
+
+                let html = '<table class="reviews-table"><thead><tr><th>نام</th><th>ایمیل</th><th>موضوع</th><th>پیام</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody>';
+                data.messages.forEach(m => {
+                    const status = m.is_read == 1 
+                        ? '<span class="status-badge status-approved">خوانده شده</span>' 
+                        : '<span class="status-badge status-pending">جدید</span>';
+                    
+                    const readBtn = m.is_read == 1 
+                        ? '' 
+                        : `<button class="action-btn btn-approve" onclick="updateMessage(${m.id}, 'read')">علامت خوانده‌شده</button>`;
+                    
+                    html += `<tr>
+                        <td>${m.name}</td>
+                        <td>${m.email}</td>
+                        <td>${m.subject || '-'}</td>
+                        <td>${m.message}</td>
+                        <td>${status}</td>
+                        <td>${readBtn}<button class="action-btn btn-delete" onclick="updateMessage(${m.id}, 'delete')">حذف</button></td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById('messagesContainer').innerHTML = '<p style="color: #dc3545;">خطا در بارگذاری پیام‌ها.</p>';
+            });
+        }
+
+        function updateMessage(id, action) {
+            if (action === 'delete' && !confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
+            
+            fetch('/api/contact-update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: adminPassword, id: id, action: action })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    loadMessages();
                 } else {
                     alert('خطا: ' + (data.error || 'نامشخص'));
                 }
