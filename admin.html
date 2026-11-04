@@ -7,22 +7,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
-        .admin-container { max-width: 900px; margin: 120px auto 60px; padding: 0 20px; }
+        .admin-container { max-width: 1200px; margin: 120px auto 60px; padding: 0 20px; }
         .login-box { background: var(--bg-lighter); padding: 40px; border-radius: 20px; border: 1px solid var(--border-color); max-width: 400px; margin: 0 auto; text-align: center; }
         .login-box input { width: 100%; padding: 15px; margin-bottom: 20px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-main); font-family: inherit; }
         .login-box input:focus { outline: none; border-color: var(--gold); }
-        .reviews-table { width: 100%; background: var(--bg-lighter); border-radius: 20px; border: 1px solid var(--border-color); overflow: hidden; margin-top: 30px; }
+        .reviews-table { width: 100%; background: var(--bg-lighter); border-radius: 20px; border: 1px solid var(--border-color); overflow: hidden; margin-top: 30px; border-collapse: collapse; }
         .reviews-table th, .reviews-table td { padding: 15px; text-align: right; border-bottom: 1px solid var(--border-color); }
         .reviews-table th { background: var(--bg-color); color: var(--gold); font-weight: 600; }
         .reviews-table tr:last-child td { border-bottom: none; }
-        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; }
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; display: inline-block; }
         .status-approved { background: rgba(40, 167, 69, 0.2); color: #28a745; }
         .status-pending { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
-        .action-btn { padding: 6px 14px; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 0.85rem; margin: 0 3px; transition: 0.3s; }
+        .action-btn { padding: 6px 14px; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 0.85rem; margin: 2px 3px; transition: 0.3s; display: inline-block; text-decoration: none; }
         .btn-approve { background: #28a745; color: white; }
         .btn-approve:hover { background: #218838; }
         .btn-delete { background: #dc3545; color: white; }
         .btn-delete:hover { background: #c82333; }
+        .btn-whatsapp { background: #25D366; color: white; }
+        .btn-whatsapp:hover { background: #128C7E; }
         .hidden { display: none; }
     </style>
 </head>
@@ -63,7 +65,6 @@
             if (!pass) return;
 
             adminPassword = pass;
-            // تست رمز با یک درخواست به سرور
             fetch('/api/admin-list', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -149,7 +150,7 @@
             .catch(err => alert('خطای شبکه'));
         }
 
-                function switchTab(tab) {
+        function switchTab(tab) {
             if (tab === 'reviews') {
                 document.getElementById('reviewsContainer').classList.remove('hidden');
                 document.getElementById('messagesContainer').classList.add('hidden');
@@ -179,7 +180,7 @@
                     return;
                 }
 
-                let html = '<table class="reviews-table"><thead><tr><th>نام</th><th>ایمیل</th><th>موضوع</th><th>پیام</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody>';
+                let html = '<table class="reviews-table"><thead><tr><th>نام</th><th>شماره تماس</th><th>ایمیل</th><th>موضوع</th><th>پیام</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody>';
                 data.messages.forEach(m => {
                     const status = m.is_read == 1 
                         ? '<span class="status-badge status-approved">خوانده شده</span>' 
@@ -189,13 +190,22 @@
                         ? '' 
                         : `<button class="action-btn btn-approve" onclick="updateMessage(${m.id}, 'read')">علامت خوانده‌شده</button>`;
                     
+                    // دکمه واتساپ
+                    const waNumber = m.phone ? m.phone.replace(/^0/, '98') : '';
+                    const waBtn = waNumber 
+                        ? `<a href="https://wa.me/${waNumber}?text=سلام ${m.name} عزیز، در پاسخ به پیام شما در سایت R Studio..." target="_blank" class="action-btn btn-whatsapp">واتساپ</a>`
+                        : '';
+                    
+                    const emailDisplay = m.email ? m.email : '-';
+                    
                     html += `<tr>
                         <td>${m.name}</td>
-                        <td>${m.email}</td>
+                        <td>${m.phone || '-'}</td>
+                        <td>${emailDisplay}</td>
                         <td>${m.subject || '-'}</td>
                         <td>${m.message}</td>
                         <td>${status}</td>
-                        <td>${readBtn}<button class="action-btn btn-delete" onclick="updateMessage(${m.id}, 'delete')">حذف</button></td>
+                        <td>${readBtn}${waBtn}<button class="action-btn btn-delete" onclick="updateMessage(${m.id}, 'delete')">حذف</button></td>
                     </tr>`;
                 });
                 html += '</tbody></table>';
