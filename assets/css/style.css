@@ -378,15 +378,18 @@ footer .footer-logo { height: 40px; margin-bottom: 20px; }
     margin-bottom: 40px;
 }
 
+/* لوگو */
 .footer-brand {
     display: flex;
     flex-direction: column;
+    align-items: center; /* وسط‌چین کردن لوگو و متن زیرش */
     gap: 10px;
 }
 
 .footer-logo {
-    height: 45px;
+    height: 55px; /* کمی بزرگ‌تر */
     width: auto;
+    filter: brightness(1.2); /* روشن‌تر کردن لوگو در پس‌زمینه تیره */
 }
 
 .footer-brand p {
@@ -394,10 +397,12 @@ footer .footer-logo { height: 40px; margin-bottom: 20px; }
     font-size: 0.95rem;
 }
 
+/* لینک‌های سریع */
 .footer-nav {
     display: flex;
     gap: 25px;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .footer-nav a {
@@ -410,6 +415,7 @@ footer .footer-logo { height: 40px; margin-bottom: 20px; }
     color: var(--gold);
 }
 
+/* تماس سریع */
 .footer-contact-minimal {
     display: flex;
     gap: 20px;
