@@ -333,7 +333,7 @@ footer .footer-logo { height: 40px; margin-bottom: 20px; }
     }
 }
 
-/* ===== PROFESSIONAL FOOTER ===== */
+/* ===== MINIMAL PROFESSIONAL FOOTER ===== */
 .site-footer {
     background: var(--bg-lighter);
     border-top: 1px solid var(--border-color);
@@ -341,101 +341,142 @@ footer .footer-logo { height: 40px; margin-bottom: 20px; }
     margin-top: 80px;
 }
 
-.footer-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1.5fr;
-    gap: 40px;
+/* CTA بزرگ */
+.footer-cta {
+    text-align: center;
     margin-bottom: 40px;
 }
 
-.footer-col h4 {
-    color: var(--gold);
+.footer-cta h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 10px;
+}
+
+.footer-cta p {
+    color: var(--text-muted);
     font-size: 1.1rem;
-    margin-bottom: 20px;
-    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+/* خط جداکننده */
+.footer-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border-color);
+    margin-bottom: 40px;
+}
+
+/* بخش‌های اصلی */
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .footer-logo {
-    height: 50px;
-    margin-bottom: 15px;
+    height: 45px;
+    width: auto;
 }
 
-.footer-about {
+.footer-brand p {
     color: var(--text-muted);
     font-size: 0.95rem;
-    line-height: 1.7;
-    max-width: 300px;
 }
 
-.footer-links {
-    list-style: none;
-    padding: 0;
+.footer-nav {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
 }
 
-.footer-links li {
-    margin-bottom: 12px;
-}
-
-.footer-links a {
+.footer-nav a {
     color: var(--text-muted);
     font-size: 0.95rem;
     transition: color 0.3s;
 }
 
-.footer-links a:hover {
+.footer-nav a:hover {
     color: var(--gold);
 }
 
-.footer-contact li {
+.footer-contact-minimal {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-contact-minimal a {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    transition: color 0.3s;
     display: flex;
     align-items: center;
-    gap: 10px;
-    color: var(--text-muted);
+    gap: 8px;
 }
 
-.footer-contact li i {
+.footer-contact-minimal a:hover {
+    color: var(--gold);
+}
+
+.footer-contact-minimal i {
     color: var(--gold);
     font-size: 1.1rem;
-    width: 20px;
 }
 
+/* نوار پایین */
 .footer-bottom {
-    border-top: 1px solid var(--border-color);
-    padding-top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
-.footer-review-link {
+.footer-bottom a {
     color: var(--gold);
     transition: 0.3s;
 }
 
-.footer-review-link:hover {
+.footer-bottom a:hover {
     color: var(--gold-hover);
 }
 
-/* ریسپانسیو فوتر */
-@media (max-width: 992px) {
-    .footer-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
+/* ریسپانسیو */
 @media (max-width: 768px) {
-    .footer-grid {
-        grid-template-columns: 1fr;
+    .footer-cta h2 {
+        font-size: 1.5rem;
+    }
+    
+    .footer-cta p {
+        font-size: 1rem;
+    }
+    
+    .footer-content {
+        flex-direction: column;
         text-align: center;
     }
     
-    .footer-about {
-        margin: 0 auto;
+    .footer-brand {
+        align-items: center;
     }
     
-    .footer-contact li {
+    .footer-nav {
+        justify-content: center;
+    }
+    
+    .footer-contact-minimal {
         justify-content: center;
     }
     
