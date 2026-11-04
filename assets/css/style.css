@@ -275,3 +275,60 @@ footer .footer-logo { height: 40px; margin-bottom: 20px; }
     .typing-wrapper { font-size: 1.2rem; }
     .whatsapp-float { bottom: 20px; left: 20px; width: 50px; height: 50px; font-size: 1.6rem; }
 }
+
+/* ===== WORK PROCESS ===== */
+.process-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    position: relative;
+}
+
+.process-step {
+    background: var(--bg-lighter);
+    padding: 30px 20px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.process-step:hover {
+    border-color: var(--gold);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(200, 169, 107, 0.1);
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    background: rgba(200, 169, 107, 0.1);
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 auto 20px;
+}
+
+.process-step h4 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--text-main);
+}
+
+.process-step p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+/* ریسپانسیو برای موبایل */
+@media (max-width: 768px) {
+    .process-grid {
+        grid-template-columns: 1fr;
+    }
+}
