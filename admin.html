@@ -44,15 +44,38 @@
                 <h2>پنل <span style="color: var(--gold);">مدیریت</span></h2>
                 <button class="btn btn-outline" onclick="logout()">خروج</button>
             </div>
-            <div class="admin-tabs" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <div class="admin-tabs" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
                 <button class="btn" id="tabReviews" onclick="switchTab('reviews')">نظرات</button>
                 <button class="btn btn-outline" id="tabMessages" onclick="switchTab('messages')">پیام‌های تماس</button>
+                <button class="btn btn-outline" id="tabPortfolio" onclick="switchTab('portfolio')">نمونه‌کارها</button>
             </div>
             <div id="reviewsContainer">
                 <p style="text-align: center; color: var(--text-muted);">در حال بارگذاری...</p>
             </div>
             <div id="messagesContainer" class="hidden">
                 <p style="text-align: center; color: var(--text-muted);">در حال بارگذاری...</p>
+            </div>
+            <div id="portfolioContainer" class="hidden">
+                <!-- فرم افزودن پروژه جدید -->
+                <div style="background: var(--bg-lighter); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); margin-bottom: 30px;">
+                    <h3 style="color: var(--gold); margin-bottom: 20px;">افزودن پروژه جدید</h3>
+                    <form id="addPortfolioForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <input type="text" name="title" placeholder="عنوان پروژه (مثلاً: خانه آر)" required style="padding: 12px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-family: inherit;">
+                        <input type="text" name="live_url" placeholder="لینک سایت زنده" required style="padding: 12px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-family: inherit;">
+                        <input type="text" name="image_url" placeholder="آدرس تصویر (مثلاً: assets/img/project.jpg)" required style="padding: 12px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-family: inherit;">
+                        <input type="text" name="tags" placeholder="تگ‌ها (با کاما جدا کنید: ووکامرس,وردپرس)" style="padding: 12px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-family: inherit;">
+                        <textarea name="description" placeholder="توضیح کوتاه (برای صفحه اصلی)" required style="grid-column: 1 / -1; padding: 12px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-family: inherit; min-height: 60px;"></textarea>
+                        <textarea name="challenge" placeholder="چالش (برای صفحه نمونه‌کارها)" style="grid-column: 1 / -1; padding: 12px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-family: inherit; min-height: 60px;"></textarea>
+                        <textarea name="solution" placeholder="راه‌حل (برای صفحه نمونه‌کارها)" style="grid-column: 1 / -1; padding: 12px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-family: inherit; min-height: 60px;"></textarea>
+                        <textarea name="result" placeholder="نتیجه (برای صفحه نمونه‌کارها)" style="grid-column: 1 / -1; padding: 12px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-family: inherit; min-height: 60px;"></textarea>
+                        <button type="submit" class="btn" style="grid-column: 1 / -1;">افزودن پروژه</button>
+                    </form>
+                </div>
+
+                <!-- جدول پروژه‌ها -->
+                <div id="portfolioTableContainer">
+                    <p style="text-align: center; color: var(--text-muted);">در حال بارگذاری...</p>
+                </div>
             </div>
         </div>
     </div>
@@ -151,18 +174,29 @@
         }
 
         function switchTab(tab) {
+            // مخفی کردن همه
+            document.getElementById('reviewsContainer').classList.add('hidden');
+            document.getElementById('messagesContainer').classList.add('hidden');
+            document.getElementById('portfolioContainer').classList.add('hidden');
+            
+            // ریست کردن کلاس دکمه‌ها
+            document.getElementById('tabReviews').className = 'btn btn-outline';
+            document.getElementById('tabMessages').className = 'btn btn-outline';
+            document.getElementById('tabPortfolio').className = 'btn btn-outline';
+            
+            // نمایش تب انتخاب شده
             if (tab === 'reviews') {
                 document.getElementById('reviewsContainer').classList.remove('hidden');
-                document.getElementById('messagesContainer').classList.add('hidden');
                 document.getElementById('tabReviews').className = 'btn';
-                document.getElementById('tabMessages').className = 'btn btn-outline';
                 loadReviews();
-            } else {
-                document.getElementById('reviewsContainer').classList.add('hidden');
+            } else if (tab === 'messages') {
                 document.getElementById('messagesContainer').classList.remove('hidden');
-                document.getElementById('tabReviews').className = 'btn btn-outline';
                 document.getElementById('tabMessages').className = 'btn';
                 loadMessages();
+            } else if (tab === 'portfolio') {
+                document.getElementById('portfolioContainer').classList.remove('hidden');
+                document.getElementById('tabPortfolio').className = 'btn';
+                loadPortfolio();
             }
         }
 
@@ -235,6 +269,95 @@
             })
             .catch(err => alert('خطای شبکه'));
         }
+
+                // ===== PORTFOLIO MANAGEMENT =====
+        function loadPortfolio() {
+            fetch('/api/portfolio-admin-list', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: adminPassword })
+            })
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('portfolioTableContainer');
+                if (!data.portfolio || data.portfolio.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">هیچ پروژه‌ای وجود ندارد.</p>';
+                    return;
+                }
+
+                let html = '<table class="reviews-table"><thead><tr><th>عنوان</th><th>توضیح</th><th>لینک</th><th>عملیات</th></tr></thead><tbody>';
+                data.portfolio.forEach(p => {
+                    html += `<tr>
+                        <td>${p.title}</td>
+                        <td>${p.description}</td>
+                        <td><a href="${p.live_url}" target="_blank" style="color: var(--gold);">مشاهده</a></td>
+                        <td><button class="action-btn btn-delete" onclick="deletePortfolio(${p.id})">حذف</button></td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById('portfolioTableContainer').innerHTML = '<p style="color: #dc3545;">خطا در بارگذاری پروژه‌ها.</p>';
+            });
+        }
+
+        function deletePortfolio(id) {
+            if (!confirm('آیا از حذف این پروژه مطمئن هستید؟')) return;
+            
+            fetch('/api/portfolio-delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: adminPassword, id: id })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    loadPortfolio();
+                } else {
+                    alert('خطا: ' + (data.error || 'نامشخص'));
+                }
+            })
+            .catch(err => alert('خطای شبکه'));
+        }
+
+        // فرم افزودن پروژه
+        document.getElementById('addPortfolioForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            data.password = adminPassword;
+            
+            const btn = this.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = 'در حال افزودن...';
+            btn.disabled = true;
+            
+            fetch('/api/portfolio-add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    this.reset();
+                    loadPortfolio();
+                    btn.textContent = '✓ اضافه شد';
+                    setTimeout(() => { btn.textContent = originalText; btn.disabled = false; }, 2000);
+                } else {
+                    alert('خطا: ' + (result.error || 'نامشخص'));
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }
+            })
+            .catch(err => {
+                alert('خطای شبکه');
+                btn.textContent = originalText;
+                btn.disabled = false;
+            });
+        });
     </script>
 </body>
 </html>
