@@ -26,76 +26,11 @@
 
     <section style="margin-top: 100px;">
         <div class="container">
-            <!-- هدر صفحه -->
             <h2 class="section-title">نمونه‌کارهای <span>من</span></h2>
             <p class="section-subtitle">مطالعه‌ای بر پروژه‌های موفق؛ از چالش تا نتیجه</p>
 
-            <!-- پروژه ۱: خانه آر -->
-            <div class="case-study">
-                <div class="case-study-image">
-                    <img src="assets/img/rhome-thumb.jpg" alt="خانه آر" class="portfolio-img">
-                </div>
-                <div class="case-study-content">
-                    <h3>خانه آر (Rhome)</h3>
-                    
-                    <div class="case-section">
-                        <h4><i class="fas fa-exclamation-circle"></i> چالش</h4>
-                        <p>فروشگاه با وجود محصولات باکیفیت، در فضای آنلاین دیده نمی‌شد.</p>
-                    </div>
-
-                    <div class="case-section">
-                        <h4><i class="fas fa-lightbulb"></i> راه‌حل</h4>
-                        <p>طراحی و پیاده‌سازی از صفر، ساخت فروشگاه آنلاین کامل، بهینه‌سازی سئو، و اتصال به اسنپ‌پی و ترب.</p>
-                    </div>
-
-                    <div class="case-section">
-                        <h4><i class="fas fa-chart-line"></i> نتیجه</h4>
-                        <p>حضور پررنگ در فروشگاه‌های واسط و افزایش دیده شدن برند.</p>
-                    </div>
-
-                    <div class="case-tags">
-                        <span class="tag">ووکامرس</span>
-                        <span class="tag">وردپرس</span>
-                        <span class="tag">کدنویسی اختصاصی</span>
-                        <span class="tag">سئو</span>
-                    </div>
-
-                    <a href="https://rhome-store.ir" target="_blank" class="btn">مشاهده سایت زنده</a>
-                </div>
-            </div>
-
-            <!-- پروژه ۲: جاوید واچز -->
-            <div class="case-study reverse">
-                <div class="case-study-image">
-                    <img src="assets/img/javid-thumb.jpg" alt="جاوید واچز" class="portfolio-img">
-                </div>
-                <div class="case-study-content">
-                    <h3>جاوید واچز (Javid Watches)</h3>
-                    
-                    <div class="case-section">
-                        <h4><i class="fas fa-exclamation-circle"></i> چالش</h4>
-                        <p>نیاز به یک وب‌سایت لوکس و تعاملی برای معرفی برند ساعت.</p>
-                    </div>
-
-                    <div class="case-section">
-                        <h4><i class="fas fa-lightbulb"></i> راه‌حل</h4>
-                        <p>طراحی از صفر، کاملاً تعاملی برای نگه داشتن مخاطب، نمایش محصولات، امکان تماس با مدیر، چندزبانه و ریسپانسیو.</p>
-                    </div>
-
-                    <div class="case-section">
-                        <h4><i class="fas fa-chart-line"></i> نتیجه</h4>
-                        <p>یک ویترین دیجیتال حرفه‌ای و ماندگار برای برند.</p>
-                    </div>
-
-                    <div class="case-tags">
-                        <span class="tag">وردپرس</span>
-                        <span class="tag">چندزبانه</span>
-                        <span class="tag">ریسپانسیو</span>
-                        <span class="tag">طراحی تعاملی</span>
-                    </div>
-
-                    <a href="https://javidwatches.com" target="_blank" class="btn">مشاهده سایت زنده</a>
-                </div>
+            <div id="portfolioContainer">
+                <p style="text-align: center; color: var(--text-muted);">در حال بارگذاری...</p>
             </div>
         </div>
     </section>
@@ -104,7 +39,7 @@
     <footer class="site-footer">
         <div class="container">
             <div class="footer-cta">
-                <h3>پروژه بعدی شما، دغدغه بعدی من است.</h3>
+                <h2>پروژه بعدی شما، دغدغه بعدی من است.</h2>
                 <p>بیایید درباره ایده‌تان صحبت کنیم.</p>
                 <a href="https://wa.me/989131373793?text=سلام، برای شروع پروژه جدید پیام می‌دم" target="_blank" class="btn">شروع پروژه</a>
             </div>
@@ -138,5 +73,65 @@
     </a>
 
     <script src="assets/js/main.js"></script>
+    
+    <!-- Load Portfolio -->
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const container = document.getElementById('portfolioContainer');
+            if (!container) return;
+
+            try {
+                const response = await fetch('/api/portfolio-list');
+                const data = await response.json();
+
+                if (data.portfolio && data.portfolio.length > 0) {
+                    container.innerHTML = '';
+                    data.portfolio.forEach((project, index) => {
+                        const isReverse = index % 2 !== 0;
+                        const tags = project.tags ? project.tags.split(',').map(t => `<span class="tag">${t.trim()}</span>`).join('') : '';
+                        
+                        const block = document.createElement('div');
+                        block.className = `case-study ${isReverse ? 'reverse' : ''}`;
+                        
+                        block.innerHTML = `
+                            <div class="case-study-image">
+                                <img src="${project.image_url}" alt="${project.title}" class="portfolio-img">
+                            </div>
+                            <div class="case-study-content">
+                                <h3>${project.title}</h3>
+                                
+                                ${project.challenge ? `
+                                <div class="case-section">
+                                    <h4><i class="fas fa-exclamation-circle"></i> چالش</h4>
+                                    <p>${project.challenge}</p>
+                                </div>` : ''}
+
+                                ${project.solution ? `
+                                <div class="case-section">
+                                    <h4><i class="fas fa-lightbulb"></i> راه‌حل</h4>
+                                    <p>${project.solution}</p>
+                                </div>` : ''}
+
+                                ${project.result ? `
+                                <div class="case-section">
+                                    <h4><i class="fas fa-chart-line"></i> نتیجه</h4>
+                                    <p>${project.result}</p>
+                                </div>` : ''}
+
+                                <div class="case-tags">${tags}</div>
+                                <a href="${project.live_url}" target="_blank" class="btn">مشاهده سایت زنده</a>
+                            </div>
+                        `;
+                        container.appendChild(block);
+                    });
+                } else {
+                    container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">هنوز پروژه‌ای ثبت نشده است.</p>';
+                }
+            } catch (error) {
+                console.error("Error loading portfolio:", error);
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">خطا در بارگذاری نمونه‌کارها.</p>';
+            }
+        });
+    </script>
 </body>
 </html>
