@@ -29,7 +29,7 @@
             <p class="section-subtitle">آماده شنیدن ایده‌های شما هستم</p>
             
             <div class="contact-wrapper">
-                                <form class="contact-form" id="contactForm">
+                <form class="contact-form" id="contactForm">
                     <input type="hidden" name="access_key" value="ea1badef-ef1b-4d7e-9b2b-1d1f2f72acf4">
                     <input type="text" name="name" placeholder="نام و نام خانوادگی" required>
                     <input type="email" name="email" placeholder="آدرس ایمیل" required>
@@ -73,5 +73,62 @@
     </a>
 
     <script src="assets/js/main.js"></script>
+    
+    <!-- Contact Form Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById('contactForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const btn = form.querySelector('button[type="submit"]');
+                    const originalText = btn.textContent;
+                    btn.textContent = 'در حال ارسال...';
+                    btn.disabled = true;
+
+                    const formData = new FormData(form);
+                    const object = Object.fromEntries(formData);
+                    const json = JSON.stringify(object);
+
+                    // ارسال همزمان به Web3Forms و دیتابیس
+                    const emailPromise = fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: json
+                    });
+
+                    const dbPromise = fetch('/api/contact-submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: json
+                    });
+
+                    Promise.allSettled([emailPromise, dbPromise])
+                    .then((results) => {
+                        const emailSuccess = results[0].status === 'fulfilled' && results[0].value.ok;
+                        const dbSuccess = results[1].status === 'fulfilled' && results[1].value.ok;
+
+                        if (emailSuccess || dbSuccess) {
+                            btn.textContent = '✓ پیام شما ارسال شد';
+                            btn.style.background = '#28a745';
+                            form.reset();
+                        } else {
+                            btn.textContent = 'خطا در ارسال';
+                            btn.style.background = '#dc3545';
+                        }
+                        
+                        setTimeout(() => {
+                            btn.textContent = originalText;
+                            btn.style.background = '';
+                            btn.disabled = false;
+                        }, 3000);
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 </html>
