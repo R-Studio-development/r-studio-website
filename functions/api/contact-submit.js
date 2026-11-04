@@ -3,20 +3,20 @@ export async function onRequestPost(context) {
     
     try {
         const data = await request.json();
-        const { name, email, subject, message } = data;
+        const { name, email, phone, subject, message } = data;
         
-        // اعتبارسنجی ساده
-        if (!name || !email || !message) {
+        // اعتبارسنجی: نام، شماره تماس و پیام اجباری هستند
+        if (!name || !phone || !message) {
             return new Response(JSON.stringify({ error: 'اطلاعات ناقص است' }), {
                 status: 400,
                 headers: { 'Content-Type': 'application/json' }
             });
         }
         
-        // ذخیره در دیتابیس
+        // ذخیره در دیتابیس (ایمیل اختیاری است)
         await env.DB.prepare(
-            'INSERT INTO messages (name, email, subject, message) VALUES (?, ?, ?, ?)'
-        ).bind(name, email, subject || '', message).run();
+            'INSERT INTO messages (name, email, phone, subject, message) VALUES (?, ?, ?, ?, ?)'
+        ).bind(name, email || '', phone, subject || '', message).run();
         
         return new Response(JSON.stringify({ success: true }), {
             status: 200,
